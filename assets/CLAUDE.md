@@ -180,3 +180,5 @@ Ao ver "⚠ LIMITE" no status line, ou ao se aproximar do teto da janela de cont
 Armazene SEMPRE em `<projeto>_archive`. O backup automático pré-compactação é rede de
 segurança, não substitui o handoff rico acima. Detalhe e hooks na skill:
 `references/contexto-claude-code.md`.
+
+- **Herda os pisos 22–29** da `schematize-engineering` (git como trava de conclusão, deploy só do git, ops é o gate da IA, sem agents inúteis, relatório 30 min/handoff 6 h, CI remoto só antes do hml, microserviço autônomo, build em dev/hml + higiene).

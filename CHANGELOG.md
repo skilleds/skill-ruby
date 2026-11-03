@@ -2,6 +2,13 @@
 
 Todas as mudanças relevantes deste pacote, no formato [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/),
 com versionamento [SemVer](https://semver.org/lang/pt-BR/).
+## [Não lançado]
+### Alterado
+- Template de CI sem `pull_request`/`push` em branch: `workflow_dispatch` + `push: tags [hml-*, v*]`, `concurrency` com `cancel-in-progress` e passo `check-ci-triggers.sh` (piso 27); DoD/exemplos que diziam "CI verde no PR" agora dizem gate local + CI remoto só antes do hml.
+- Bloco "Herda os pisos 22–29" em `SKILL.md` e `assets/CLAUDE.md`.
+- `ops.md` §8 e `operacao.md`: Kamal/`kamal deploy` da estação vetado (23), `rails console|runner|dbconsole` e SQL vetados à IA (24), build do git pelo ops; `ruby-ops` alinhado (22/23/24).
+- `[~]` Rails 8.x corrente e Sidekiq vs Solid Queue nos exemplos ficam on-hold (decisão de política/fonte).
+
 ## [0.6.1] — 2026-10-20
 ### Alterado
 - Bloco herdado `engineering/iam-desenho:invariantes` sincronizado: passkey padrão na fase 0 e matriz de acesso por rota.
