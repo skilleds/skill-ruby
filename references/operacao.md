@@ -32,7 +32,7 @@
 
 - ≥ 1 reviewer (≥ 2 para `domain`, schema/migration, segurança).
 
-- CI verde obrigatório (RuboCop + brakeman + bundler-audit + rspec — §34).
+- Gate local verde obrigatório por commit; CI remoto só antes do hml/tag, piso 27 (RuboCop + brakeman + bundler-audit + rspec — §34).
 
 ## 26. Runbooks e Incidentes
 

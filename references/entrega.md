@@ -37,7 +37,7 @@ README mínimo: o que é, como rodar (`bundle install` + `bin/` scripts + `bundl
 
 - [ ] Smoke tests executados em staging **(com asserção de conteúdo e self-check anti verde-mentiroso — a `schematize-qa` (`references/categorias.md` §§5 e 10))**
 
-- [ ] CI verde (`bundle exec rake ci`), code review aprovado
+- [ ] gate local verde (`bundle exec rake ci`; CI remoto só antes do hml — piso 27), code review aprovado
 
 - [ ] **Nenhum efeito externo real fora de `prd` (se o projeto envia e-mail/SMS/push/webhook/cobrança):** provider default = **sink**, **guard deny-by-default dentro do provider** (com teste que **vê a recusa**), **cap por execução** válido em TODOS os ambientes, e endereços só no **domínio de teste em rota nula**. Normativa: `schematize-engineering` → `references/efeitos-externos.md`; recorte desta linguagem em `references/iam.md` §3.1; anti-padrão §37 *"Disparar efeito externo REAL a partir de não-produção"* (citado **por título**, porque a numeração do §37 diverge entre skills)
 
@@ -55,7 +55,7 @@ README mínimo: o que é, como rodar (`bundle install` + `bin/` scripts + `bundl
   - **Índice global da aplicação** (`INDEX_GLOBAL.md`) — o mapa macro: repos/serviços/bounded contexts e como se comunicam; a relação de **pastas top-level** de cada repo e a responsabilidade de cada uma; **o que cada coisa faz** e o ponto de entrada de **como se faz** (link pro fluxo/use-case/runbook). É o "mapa do território".
   - **Índice de microfunções** (`INDEX_FUNCTIONS.md`, por serviço) — o catálogo fino: cada método/classe/módulo relevante → **o quê**, **onde é usado/previsto**, dependências e efeitos colaterais. Gerado a partir dos doc-comments YARD obrigatórios (§6).
 
-- Todo PR que **adiciona, remove ou move** funcionalidade atualiza o índice no mesmo PR. Índice desatualizado **trava o merge** (item da DoD, §35).
+- Todo PR que **adiciona, remove ou move** funcionalidade atualiza o índice no mesmo commit. Índice desatualizado **trava a promoção** (item da DoD, §35).
 
 - O índice é **fonte da verdade**: ao planejar uma feature, consulte-o primeiro pra não reimplementar o que já existe (anti-duplicação — liga com DRY semântico, §1).
 

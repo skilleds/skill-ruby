@@ -131,7 +131,7 @@ Versões concretas de Ruby/Rails (e janela de EOL) ficam em **`references/stack-
     → Archive é parte da entrega. Sempre gerado. Tarefa sem archive não está pronta (§35).
 
 30. **Merge direto na `main` / force push em branch protegida / pular o PR e o review.**
-    → Trunk-based com PR, CI verde, CODEOWNERS (§24).
+    → Trunk-based, gate local verde (CI remoto só antes do hml), CODEOWNERS (§24).
 
 31. **Desligar rate limit, validação de payload (strong params/`rack-attack`), ou security scan "temporariamente".**
     → "Temporário" vira permanente. Não se desliga piso de segurança (§12, §13).
