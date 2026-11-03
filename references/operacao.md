@@ -18,7 +18,7 @@
 
 ## 21. Infraestrutura e Deploy
 
-- **Imagem de container:** base **Ruby slim pinada por digest** (não por tag móvel), usuário **não-root**, filesystem **read-only**. Dependências instaladas com `bundle install --deployment --frozen` (gems congeladas pelo `Gemfile.lock`, sem resolver no deploy). O artefato carrega **proveniência git** (commit SHA embutido em label/ENV) — é o mesmo bit que rodou no teste local.
+- **Imagem de container:** base **Ruby slim pinada por digest** (não por tag móvel), usuário **não-root**, filesystem **read-only**. Dependências instaladas com `bundle install --deployment --frozen` (gems congeladas pelo `Gemfile.lock`, sem resolver no deploy). O build carrega **proveniência git** (commit SHA embutido em label/ENV) e é feito **a partir do git pelo ops** (piso 23) — a imagem/arquivos nunca são enviados da estação (`docker save|load`, `scp`, `rsync` e `kamal deploy` da estação são VETADOS; `references/ops.md` §8).
 
 - **Runtime:** a app Ruby sobe via **Puma** sob **systemd**; **Sidekiq** roda como **unit systemd à parte** (worker isolado, ver `references/ops.md` §3). Web e worker escalam e falham independentemente.
 
@@ -38,7 +38,7 @@
 
 ### 26.1 Runbooks
 
-- Conteúdo mínimo: como diagnosticar falhas comuns, dashboards relevantes, comandos úteis (`bundle exec rails runner`, inspeção de fila Sidekiq, `bin/` scripts), como fazer rollback, contatos.
+- Conteúdo mínimo: como diagnosticar falhas comuns, dashboards relevantes, comandos úteis (operações nomeadas do ops p/ inspeção de fila e saúde; `rails runner`/console só como break-glass HUMANO — a IA não usa, piso 24), como fazer rollback, contatos.
 
 ## 27. ADR — Architecture Decision Records
 

@@ -17,7 +17,7 @@
 
 - **Nada pula etapa.** Nunca vai direto pra hml ou prd. hml só recebe o que está no GitHub e passou no teste local (`bundle exec rspec` verde); prd só recebe o que foi homologado em hml.
 
-- **VETADO editar código direto no servidor (hml/prd).** O servidor é **imutável por edição manual** — recebe apenas **artefato promovido do git** (mesma imagem/commit SHA, §21). "Editei o `.rb` direto no prd pra resolver rápido" é o anti-padrão que esta reference existe pra matar.
+- **VETADO editar código direto no servidor (hml/prd).** O servidor é **imutável por edição manual** — recebe apenas o que o ops **busca do git** (SHA/tag verificado, §21 e §8) — nunca arquivo enviado da estação. "Editei o `.rb` direto no prd pra resolver rápido" é o anti-padrão que esta reference existe pra matar.
 
 ## 2. Layout no servidor, seed global e redeploy destrutivo
 
@@ -39,7 +39,7 @@
 
 ## 4. O ops é a interface única (100% das operações)
 
-- **Proibido** `ssh servidor` + comando ad-hoc, editar arquivo no servidor, `bundle`/`rails`/`systemctl`/`sidekiqctl` na mão, script solto. Se **não existe** comando de ops pra aquilo, **cria o comando no ops** — não faz por fora. O que não está no ops não aconteceu (e não é reproduzível).
+- **Proibido** (e à IA, sem exceção — piso 24) `ssh servidor` + comando ad-hoc, `rails console`/`rails runner`/`rails dbconsole` na VPS, editar arquivo no servidor, `bundle`/`rails`/`systemctl`/`sidekiqctl` na mão, script solto. Se **não existe** comando de ops pra aquilo, **cria o comando no ops** — não faz por fora. O que não está no ops não aconteceu (e não é reproduzível).
 
 - **Superfície mínima** (idempotentes, com `--help` e saída machine-readable): `bootstrap` (cria `/<app>/` e clona os repos) · `install`/`up` · `redeploy` (destrutivo, do seed §2) · `update` · `config` (do `/<app>/.env`) · `migrate` (reversível, `rails db:migrate`/`db:rollback`) · `health`/`doctor` · `rollback` · `logs`/`troubleshoot` · `reset` (destrói dados — gated, dev/hml) · `test` (ver a `schematize-qa` (test kit, `references/execucao.md` secao 2)).
 
@@ -54,5 +54,11 @@
 - **O ops NÃO contorna serializando "pra funcionar".** Serializar pra mascarar a dependência é **proibido** — esconde o defeito. O ops **expõe** a colisão (relatório: o que disputou o quê, quem esperou quem) e a correção real é feita: **cada serviço sobe sozinho**, sem exigir outro no boot, com **degradação graciosa** (outbox/retry/fila Sidekiq; piso 10). Só depois o paralelo volta a `nproc`.
 
 ## 7. Integração com o resto da casa
+
+## 8. Pisos 22–24 em Ruby/Rails — git é o único canal; o ops é o gate da IA
+
+- **Canal único = git (22/23).** **VETADO** `scp`, `rsync`, `tar | ssh`, `docker save | load`, `git bundle` ad-hoc e colar patch. **Kamal (`kamal deploy`, `config/deploy.yml`) disparado da estação é VETADO**: o Rails 8 o gera por padrão, mas ele empurra imagem da máquina do dev — remova/ignore `config/deploy.yml` e o `bin/kamal`, ou use-o somente **dentro do ops, na VPS**, a partir do SHA/tag buscado do git. O ops, rodando na VPS, faz `fetch` + `checkout` do SHA exato (verificado) e `bundle install --deployment --frozen` num build limpo.
+- **A IA nunca muda a VPS direto nem escreve SQL (24).** `rails console|runner|dbconsole`, `rake`/`rails db:*` e SQL à mão na VPS são **proibidos à IA**; ela pede uma **operação nomeada** do ops (ex.: `ops migrate`, `ops rollback`, `ops inspect queues`, query nomeada somente-leitura versionada), com dry-run, auditoria e confirmação humana no destrutivo. Faltou operação? Implementa-se no repo do ops, via git. Console de produção é break-glass HUMANO auditado.
+- **Antes de declarar pronto (22):** remote presente, `git push` feito, `HEAD == origin/<branch>` (`scripts/check-deploy-git.sh` da `schematize-engineering`).
 
 Comando: **`/<slug>-ops`** (ex.: `/eng-ops`, `/ruby-ops`) — audita/scaffolda o ops, verifica o fluxo de ambientes, o layout `/<app>/` + seed, o isolamento por usuário (Puma/Sidekiq), a paralelização (`nproc`) e a independência.
