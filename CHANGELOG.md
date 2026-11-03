@@ -9,6 +9,9 @@ com versionamento [SemVer](https://semver.org/lang/pt-BR/).
 - `ops.md` §8 e `operacao.md`: Kamal/`kamal deploy` da estação vetado (23), `rails console|runner|dbconsole` e SQL vetados à IA (24), build do git pelo ops; `ruby-ops` alinhado (22/23/24).
 - `[~]` Rails 8.x corrente e Sidekiq vs Solid Queue nos exemplos ficam on-hold (decisão de política/fonte).
 
+### Corrigido
+- `scripts/simulated/run.py`: passa no ruff da casa sem afrouxar nada — saída via `emit()` (sem `print`), esquema da URL validado (só http/https, erro claro) com teste em `run.test.sh`, `noqa` inútil removido, `datetime.UTC`, `ruff format`; comportamento preservado.
+
 ## [0.6.1] — 2026-10-20
 ### Alterado
 - Bloco herdado `engineering/iam-desenho:invariantes` sincronizado: passkey padrão na fase 0 e matriz de acesso por rota.
